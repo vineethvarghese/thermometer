@@ -13,22 +13,6 @@ object Flows {
       override val flowDef: FlowDef = scaldingFlow
       override def mode: Mode = scaldingMode
     }
-
-    def start(j : Job, cnt : Int): Option[String \/ Throwable] = try {
-      val successful = {
-        j.validate
-        j.run
-      }
-      j.clear
-
-      if(successful)
-        j.next.flatMap(nextj => start(nextj, cnt + 1))
-      else
-        Some(s"Job failed to run <${j.name}>".left)
-    } catch {
-      case NonFatal(e) => Some(e.right)
-    }
-
-    start(job, 0)
+    Jobs.runJob(job)
   }
 }

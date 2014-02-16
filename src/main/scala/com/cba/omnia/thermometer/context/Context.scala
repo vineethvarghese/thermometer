@@ -91,6 +91,13 @@ case class Context(config: Configuration) {
       finally in.close
     })(s"""content(${paths.mkString(", ")})""").mkString("\n")
 
+  def data(paths: Path*): List[Array[Byte]] =
+    withFiles(paths.toList, (system, file) => {
+      val in = system.open(file)
+      try Streams.bytes(in)
+      finally in.close
+    })(s"""data(${paths.mkString(", ")})""")
+
   def glob(pattern: Path): List[Path] =
     withFileSystem(system =>
       system.globStatus(pattern).toList.map(_.getPath)

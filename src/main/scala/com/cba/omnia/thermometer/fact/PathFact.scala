@@ -2,6 +2,7 @@ package com.cba.omnia.thermometer
 package fact
 
 import com.cba.omnia.thermometer.context._
+import com.cba.omnia.thermometer.core._
 
 import org.apache.hadoop.fs.Path
 import org.specs2._
@@ -28,8 +29,26 @@ object PathFactoids extends ThrownExpectations {
   def missing: PathFactoid =
     conditional(!_.exists(_))(path => s"Path <${path}> exists when it should.")
 
-  def records(n: Int): PathFactoid =
+  def count(n: Int): PathFactoid =
     PathFactoid((context, path) => {
       val count = context.lines(path).size
       if (count == n) ok.toResult else failure(s"Path <${path}> exists but it contains ${count} records where we expected ${n}.") })
+
+  def records[A](reader: ThermometerRecordReader[A], data: List[A]): PathFactoid =
+    PathFactoid((context, path) => {
+      val records = context.glob(path).flatMap(p =>
+        reader.read(context.config, p).unsafePerformIO)
+      if (records.toSet == data.toSet)
+        ok.toResult
+      else
+        failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${data.mkString(", ")}], got [${records.mkString(", ")}].""") })
+
+  def lines(expected: List[String]): PathFactoid =
+    PathFactoid((context, path) => {
+      val actual = context.lines(context.glob(path):_*)
+      if (actual.toSet == expected.toSet)
+        ok.toResult
+      else
+        failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${expected.mkString(", ")}], got [${actual.mkString(", ")}].""") })
+
 }

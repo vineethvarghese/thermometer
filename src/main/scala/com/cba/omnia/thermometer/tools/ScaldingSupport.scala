@@ -9,7 +9,7 @@ import com.cba.omnia.thermometer.context._
 import com.twitter.scalding._
 import com.twitter.scalding.typed.IterablePipe
 
-import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.fs.FileStatus
 import org.specs2._
 import org.specs2.matcher._
@@ -26,7 +26,7 @@ trait ScaldingSupport extends FieldConversions { self =>
   lazy val dir: String =
     s"/tmp/hadoop/${name}/mapred"
 
-  lazy val conf: Configuration = new Configuration <| (conf => {
+  lazy val conf: JobConf = new JobConf <| (conf => {
     new java.io.File(dir, "data").mkdirs()
     System.setProperty("user.dir", s"${dir}/user")
     conf.set("user.dir", s"${dir}/user")
@@ -38,8 +38,14 @@ trait ScaldingSupport extends FieldConversions { self =>
     conf.set("fs.defaultFS", s"file://${dir}/data")
   })
 
-  implicit val flow =
-    new FlowDef <| (_.setName(name))
+  lazy val flowref =
+    new java.util.concurrent.atomic.AtomicReference[FlowDef](new FlowDef <| (_.setName(name)))
+
+  def resetFlow() =
+    flowref.set(new FlowDef <| (_.setName(name)))
+
+  implicit def flow =
+    flowref.get
 
   implicit val mode: Mode =
     Hdfs(false, conf)

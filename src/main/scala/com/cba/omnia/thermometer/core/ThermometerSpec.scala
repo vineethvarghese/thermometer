@@ -1,6 +1,7 @@
 package com.cba.omnia.thermometer
 package core
 
+import cascading.flow.FlowDef
 import cascading.pipe.Pipe
 import com.cba.omnia.thermometer.fact._
 import com.cba.omnia.thermometer.tools._
@@ -26,12 +27,22 @@ abstract class ThermometerSpec extends Specification
     sequential ^ isolated ^ fs
 
   implicit def PipeToVerifiable(p: Pipe) =
-    Verifiable
+    Verifiable()
 
   implicit def TypedPipeToVerifiable[A](p: TypedPipe[A]) =
-    Verifiable
+    Verifiable()
 
-  object Verifiable {
+  def isolate[A](thunk: => A): A = {
+    resetFlow
+    thunk
+  }
+
+  def withDependency(dependency: => Result)(test: => Result): Result = {
+    dependency
+    isolate { test }
+  }
+
+  case class Verifiable() {
     def runsOk: Result = {
       println("")
       println("")
