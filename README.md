@@ -48,7 +48,7 @@ To verify some pipeline, you add a withFacts call. For example:
       .withFacts(
         "cars" </> "_ERROR"      ==> missing
       , "cars" </> "_SUCCESS"    ==> exists
-      , "cars" </> "part-00000"  ==> (exists, records(data.size))
+      , "cars" </> "part-00000"  ==> (exists, count(data.size))
       )
 ```
 
@@ -108,6 +108,56 @@ Usage:
 
 ```
 
+using thermometer from scalacheck properties
+--------------------------------------------
+
+The hackery that thermometer uses to handle the _mutable_, _global_, _implicit_ state that
+scalding uses (yes shake your head now). Needs to be reset for each run. To do this use an
+`isolate {} block inside the property`.
+
+For example:
+
+```
+  def pipeline = prop((data: List[String]) = isolate {
+    ThermometerSource(data)
+      .map(c => (c, "really " + c + "!"))
+      .write(TypedPsv[(String, String)]("output"))
+      .withFacts(
+      , "output" </> "_SUCCESS"    ==> exists
+      )
+  })
+
+
+```
+
+dependent pipelines
+-------------------
+
+It is often useful to use one spec as the input to another (for example, you want to
+write then read).
+
+To do this use `withDependency`.
+
+For example if you were testing TypedPsv/TypedCsv something like this would work:
+
+```
+  def write =
+    ThermometerSource(List("hello", "world"))
+      .write(TypedPsv[(String, String)]("output.psv"))
+      .withFacts(
+        "output.psv" </> "_SUCCESS"   ==> exists
+      )
+
+  def read = withDependency(write) {
+    TypedPsv[(String, String)]("output.psv")
+      .write(TypedCsv("output.csv"))
+      .withFacts(
+        "customers.csv" </> "_SUCCESS"   ==> exists
+      )
+  }
+
+```
+
 
 ongoing work
 ------------
@@ -117,7 +167,6 @@ ongoing work
    - Support for statistical comparisons
    - Support for testing in-memory pipes without going to disk
  - A ThermometerSink that would allow in memory fact checking
- - General support for reading different file formats
  - Support for running full jobs in the same fact framework
  - Support for re-running tests with different scalding modes
  - Add the ability for Context to not depend on hdfs, via some
