@@ -43,6 +43,6 @@ Demonstration of ThermometerSpec
       .withFacts(
         "cars" </> "_ERROR"      ==> missing
       , "cars" </> "_SUCCESS"    ==> exists
-      , "cars" </> "part-00000"  ==> (exists, records(data.size))
+      , "cars" </> "part-00000"  ==> (exists, count(data.size))
       )
 }
