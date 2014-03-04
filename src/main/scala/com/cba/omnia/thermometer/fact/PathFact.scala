@@ -43,6 +43,15 @@ object PathFactoids extends ThrownExpectations {
       else
         failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${data.mkString(", ")}], got [${records.mkString(", ")}].""") })
 
+  def recordCount[A](reader: ThermometerRecordReader[A], n: Int): PathFactoid =
+    PathFactoid((context, path) => {
+      val records = context.glob(path).flatMap(p =>
+        reader.read(context.config, p).unsafePerformIO)
+      if (records.size == n)
+        ok.toResult
+      else
+        failure(s"""Path <${path}> exists but it contains ${records.size} records and we expected ${n}.""") })
+
   def lines(expected: List[String]): PathFactoid =
     PathFactoid((context, path) => {
       val actual = context.lines(context.glob(path):_*)
