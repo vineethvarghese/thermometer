@@ -25,7 +25,7 @@ getting started
 Import everything:
 
 ```
-import com.cba.omnia.thermometer.core._, Thermometer._
+import au.com.cba.omnia.thermometer.core._, Thermometer._
 ```
 
 Then create a spec that extends `ThermometerSpec`. This sets up appropriate scalding,
