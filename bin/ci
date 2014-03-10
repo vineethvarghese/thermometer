@@ -2,5 +2,6 @@
 
 : ${SBT_DIR:=/etc/sbt}
 
-git checkout -b build-${bamboo.buildNumber}
+env
+
 $(dirname "$0")/../sbt -sbt-dir "${SBT_DIR}" '; set publishTo in ThisBuild := Some("commbank-releases" at "http://commbank.artifactoryonline.com/commbank/ext-releases-local"); set publishMavenStyle in ThisBuild  := true; clean; test; +publish'
