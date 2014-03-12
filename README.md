@@ -26,6 +26,8 @@ Import everything:
 
 ```
 import au.com.cba.omnia.thermometer.core._, Thermometer._
+import au.com.cba.omnia.thermometer.fact.PathFactoids._
+import com.twitter.scalding._
 ```
 
 Then create a spec that extends `ThermometerSpec`. This sets up appropriate scalding,
@@ -118,7 +120,7 @@ scalding uses (yes shake your head now). Needs to be reset for each run. To do t
 For example:
 
 ```
-  def pipeline = prop((data: List[String]) = isolate {
+  def pipeline = prop((data: List[String]) => isolate {
     ThermometerSource(data)
       .map(c => (c, "really " + c + "!"))
       .write(TypedPsv[(String, String)]("output"))
