@@ -145,13 +145,13 @@ For example if you were testing TypedPsv/TypedCsv something like this would work
 ```
   def write =
     ThermometerSource(List("hello", "world"))
-      .write(TypedPsv[(String, String)]("output.psv"))
+      .write(TypedPsv[String]("output.psv"))
       .withFacts(
         "output.psv" </> "_SUCCESS"   ==> exists
       )
 
   def read = withDependency(write) {
-    TypedPsv[(String, String)]("output.psv")
+    TypedPsv[String]("output.psv")
       .write(TypedCsv("output.csv"))
       .withFacts(
         "customers.csv" </> "_SUCCESS"   ==> exists
