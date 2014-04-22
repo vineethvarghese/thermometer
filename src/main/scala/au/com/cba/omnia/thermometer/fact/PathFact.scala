@@ -27,7 +27,7 @@ object PathFactoids extends ThrownExpectations {
     conditional(_.exists(_))(path => s"Path <${path}> does not exist when it should.")
 
   def missing: PathFactoid =
-    conditional(!_.exists(_))(path => s"Path <${path}> exists when it should.")
+    conditional(!_.exists(_))(path => s"Path <${path}> exists when it should not.")
 
   def count(n: Int): PathFactoid =
     PathFactoid((context, path) => {
