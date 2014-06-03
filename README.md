@@ -1,6 +1,9 @@
 thermometer
 ===========
 
+[Build Status](https://magnum.travis-ci.com/CommBank/thermometer.svg?token=A3xq7fpHLyey1yCrNASy&branch=master)](https://magnum.travis-ci.com/CommBank/thermometer)
+[![Gitter chat](https://badges.gitter.im/CommBank.png)](https://gitter.im/CommBank)
+
 ```
 A micro-test framework for scalding pipes to make sure you don't get burnt
 ```
