@@ -16,8 +16,6 @@ package au.com.cba.omnia.thermometer.example
 
 import com.twitter.scalding._
 
-import scalaz.effect.IO
-
 import au.com.cba.omnia.thermometer.core._
 import au.com.cba.omnia.thermometer.core.Thermometer._
 
@@ -55,13 +53,11 @@ Demonstration of ThermometerSpec
 
   import au.com.cba.omnia.thermometer.fact.PathFactoids._
 
-  lazy val reader = new ThermometerRecordReader[Car]((conf, path) => IO {data})
-  
   def facts =
     pipeline
       .withFacts(
         "cars" </> "_ERROR"      ==> missing
       , "cars" </> "_SUCCESS"    ==> exists
-      , "cars" </> "part-00000"  ==> (exists, count(data.size), records(reader, data))
+      , "cars" </> "part-00000"  ==> (exists, count(data.size))
       )
 }

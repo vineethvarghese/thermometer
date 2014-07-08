@@ -15,25 +15,27 @@
 package au.com.cba.omnia.thermometer
 package tools
 
-import cascading.flow.FlowDef
-import cascading.pipe.Pipe
-import au.com.cba.omnia.thermometer.fact._
-import au.com.cba.omnia.thermometer.tools._
-import au.com.cba.omnia.thermometer.context._
-import au.com.cba.omnia.thermometer.core._
-
 import com.twitter.scalding._
-import com.twitter.scalding.typed.IterablePipe
-import org.apache.hadoop.mapred.JobConf
-import org.specs2._
-import org.specs2.matcher._
-import org.specs2.execute._
-import org.specs2.specification.Fragments
-import scalaz.{Failure => _, _}, Scalaz._
-import scala.util.control.NonFatal
-import scalaz.effect.IO
+
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
+import org.apache.hadoop.mapred.JobConf
+import org.specs2._
+import org.specs2.execute._
+import org.specs2.matcher._
+
+import scalaz.{Failure => _, _}, Scalaz._
+import scalaz.effect.IO
+
+import au.com.cba.omnia.thermometer.context._
+import au.com.cba.omnia.thermometer.core._
+import au.com.cba.omnia.thermometer.fact._
+import au.com.cba.omnia.thermometer.tools._
+
+
+
+import cascading.flow.FlowDef
+import cascading.pipe.Pipe
 
 trait ScaldingSupport extends FieldConversions { self =>
   lazy val name: String =
