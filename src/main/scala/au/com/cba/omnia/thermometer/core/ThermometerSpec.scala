@@ -15,25 +15,25 @@
 package au.com.cba.omnia.thermometer
 package core
 
+import java.io.File
+
+import com.twitter.scalding.Job
+import com.twitter.scalding.TypedPipe
+
+import org.apache.commons.io.FileUtils
+import org.apache.hadoop.fs.Path
+import org.specs2._
+import org.specs2.execute._
+import org.specs2.matcher._
+import org.specs2.specification.Fragments
+
+import scalaz.{Failure => _, _}, Scalaz._
+
 import au.com.cba.omnia.thermometer.context._
 import au.com.cba.omnia.thermometer.fact._
 import au.com.cba.omnia.thermometer.tools._
 
-import org.apache.commons.io.FileUtils
-import org.apache.hadoop.fs.Path
-
-import org.specs2._
-import org.specs2.matcher._
-import org.specs2.execute._
-import org.specs2.specification.Fragments
-
-import scalaz.{Failure => _, _}, Scalaz._
-import scala.util.control.NonFatal
 import cascading.pipe.Pipe
-import com.twitter.scalding.Job
-import com.twitter.scalding.TypedPipe
-
-import java.io.File
 
 abstract class ThermometerSpec extends Specification
     with TerminationMatchers

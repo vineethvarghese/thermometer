@@ -14,10 +14,12 @@
 
 package au.com.cba.omnia.thermometer.example
 
-import au.com.cba.omnia.thermometer.core._, Thermometer._
-import cascading.pipe.Pipe
 import com.twitter.scalding._
+
 import scalaz.effect.IO
+
+import au.com.cba.omnia.thermometer.core._
+import au.com.cba.omnia.thermometer.core.Thermometer._
 
 class TypedPsvSpec extends ThermometerSpec { def is = s2"""
 
