@@ -15,9 +15,9 @@
 package au.com.cba.omnia.thermometer.example
 
 import au.com.cba.omnia.thermometer.core._, Thermometer._
-
 import cascading.pipe.Pipe
 import com.twitter.scalding._
+import scalaz.effect.IO
 
 class TypedPsvSpec extends ThermometerSpec { def is = s2"""
 
@@ -28,6 +28,7 @@ Demonstration of ThermometerSpec
   Verify output using fact api                              $facts
 
 """
+
   case class Car(model: String, year: Int) {
     def toPSV = s"${model}|${year}"
   }
@@ -52,11 +53,13 @@ Demonstration of ThermometerSpec
 
   import au.com.cba.omnia.thermometer.fact.PathFactoids._
 
+  lazy val reader = new ThermometerRecordReader[Car]((conf, path) => IO {data})
+  
   def facts =
     pipeline
       .withFacts(
         "cars" </> "_ERROR"      ==> missing
       , "cars" </> "_SUCCESS"    ==> exists
-      , "cars" </> "part-00000"  ==> (exists, count(data.size))
+      , "cars" </> "part-00000"  ==> (exists, count(data.size), records(reader, data))
       )
 }

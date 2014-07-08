@@ -20,18 +20,20 @@ import cascading.pipe.Pipe
 import au.com.cba.omnia.thermometer.fact._
 import au.com.cba.omnia.thermometer.tools._
 import au.com.cba.omnia.thermometer.context._
+import au.com.cba.omnia.thermometer.core._
+
 import com.twitter.scalding._
 import com.twitter.scalding.typed.IterablePipe
-
 import org.apache.hadoop.mapred.JobConf
-import org.apache.hadoop.fs.FileStatus
 import org.specs2._
 import org.specs2.matcher._
 import org.specs2.execute._
 import org.specs2.specification.Fragments
-
 import scalaz.{Failure => _, _}, Scalaz._
 import scala.util.control.NonFatal
+import scalaz.effect.IO
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.Path
 
 trait ScaldingSupport extends FieldConversions { self =>
   lazy val name: String =
@@ -69,4 +71,7 @@ trait ScaldingSupport extends FieldConversions { self =>
 
   implicit def PipeToRichPipe(pipe : Pipe): RichPipe =
     new RichPipe(pipe)
+
+  implicit def PathIterToThermometerRecordReader[A](toIter: (Configuration, Path) => Iterator[A]): ThermometerRecordReader[A] =
+    new ThermometerRecordReader[A]((conf, path) => IO { toIter(conf, path).toList })
 }

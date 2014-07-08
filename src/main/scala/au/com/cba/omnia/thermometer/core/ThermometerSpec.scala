@@ -15,12 +15,12 @@
 package au.com.cba.omnia.thermometer
 package core
 
-import cascading.flow.FlowDef
-import cascading.pipe.Pipe
+import au.com.cba.omnia.thermometer.context._
 import au.com.cba.omnia.thermometer.fact._
 import au.com.cba.omnia.thermometer.tools._
-import au.com.cba.omnia.thermometer.context._
-import com.twitter.scalding._
+
+import org.apache.commons.io.FileUtils
+import org.apache.hadoop.fs.Path
 
 import org.specs2._
 import org.specs2.matcher._
@@ -29,22 +29,29 @@ import org.specs2.specification.Fragments
 
 import scalaz.{Failure => _, _}, Scalaz._
 import scala.util.control.NonFatal
+import cascading.pipe.Pipe
+import com.twitter.scalding.Job
+import com.twitter.scalding.TypedPipe
 
+import java.io.File
 
 abstract class ThermometerSpec extends Specification
     with TerminationMatchers
     with ThrownExpectations
     with ScalaCheck
     with ScaldingSupport {
-
+  
   override def map(fs: => Fragments) =
     sequential ^ isolated ^ fs
 
   implicit def PipeToVerifiable(p: Pipe) =
-    Verifiable()
+    new VerifiableFlow()
 
   implicit def TypedPipeToVerifiable[A](p: TypedPipe[A]) =
-    Verifiable()
+    new VerifiableFlow()
+    
+  implicit def JobToVerifiable(j: Job) =
+    new VerifiableJob(j)
 
   def isolate[A](thunk: => A): A = {
     resetFlow
@@ -55,8 +62,22 @@ abstract class ThermometerSpec extends Specification
     dependency
     isolate { test }
   }
-
-  case class Verifiable() {
+  
+  def withEnvironment(sourceEnv: Path)(test: => Result):Result = {
+    FileUtils.copyDirectory(new File(sourceEnv.toUri().getRawPath()), new File(dir))
+    test
+  }
+  
+  class VerifiableFlow() extends Verifiable {
+    def run:Option[scalaz.\/[String,Throwable]] = Flows.runFlow(scaldingArgs, flow, mode)
+  }
+  class VerifiableJob(job: Job) extends Verifiable {
+    def run:Option[scalaz.\/[String,Throwable]] = Jobs.runJob(job)
+  }
+  
+  abstract class Verifiable() {
+    def run:Option[scalaz.\/[String,Throwable]]
+    
     def runsOk: Result = {
       println("")
       println("")
@@ -64,7 +85,7 @@ abstract class ThermometerSpec extends Specification
       println("")
       println("")
 
-      Flows.runFlow(scaldingArgs, flow, mode) match {
+      run match {
         case None =>
           ok
         case Some(-\/(message)) =>
