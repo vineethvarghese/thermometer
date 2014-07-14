@@ -22,3 +22,7 @@ libraryDependencies ++=
     "org.scalacheck"          %% "scalacheck"                  % depend.versions.scalacheck,
     "org.scalaz"              %% "scalaz-scalacheck-binding"   % depend.versions.scalaz
  )
+
+uniform.docSettings("https://github.com/CommBank/thermometer")
+
+uniform.ghsettings

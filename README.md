@@ -21,6 +21,12 @@ Thermometer tests can be declared in two ways, as `facts` or as traditional spec
 checks. The `facts` api should be preferred, it generally provides better contextual
 error messages and composition for lower effort.
 
+[Scaladoc](https://commbank.github.io/thermometer/lates/api/index.html)
+
+Usage
+-----
+
+See https://commbank.github.io/thermometer/index.html.
 
 getting started
 ---------------
