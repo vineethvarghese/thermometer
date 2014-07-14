@@ -73,7 +73,4 @@ trait ScaldingSupport extends FieldConversions { self =>
 
   implicit def PipeToRichPipe(pipe : Pipe): RichPipe =
     new RichPipe(pipe)
-
-  implicit def PathIterToThermometerRecordReader[A](toIter: (Configuration, Path) => Iterator[A]): ThermometerRecordReader[A] =
-    new ThermometerRecordReader[A]((conf, path) => IO { toIter(conf, path).toList })
 }

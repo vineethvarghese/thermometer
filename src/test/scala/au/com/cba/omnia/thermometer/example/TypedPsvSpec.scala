@@ -15,9 +15,14 @@
 package au.com.cba.omnia.thermometer.example
 
 import com.twitter.scalding._
+import com.twitter.scalding.typed.IterablePipe
+
+import org.apache.hadoop.mapred.JobConf
 
 import au.com.cba.omnia.thermometer.core._
 import au.com.cba.omnia.thermometer.core.Thermometer._
+import au.com.cba.omnia.thermometer.tools._
+import au.com.cba.omnia.thermometer.fact.PathFactoids._
 
 class TypedPsvSpec extends ThermometerSpec { def is = s2"""
 
@@ -51,8 +56,6 @@ Demonstration of ThermometerSpec
         t.lines("cars" </> "part-*") must contain(allOf(data.map(_.toPSV):_*))
       })
 
-  import au.com.cba.omnia.thermometer.fact.PathFactoids._
-
   def facts =
     pipeline
       .withFacts(
@@ -60,4 +63,32 @@ Demonstration of ThermometerSpec
       , "cars" </> "_SUCCESS"    ==> exists
       , "cars" </> "part-00000"  ==> (exists, count(data.size))
       )
+}
+
+class TestJob(i: Int, args: Args) extends Job(args) {
+  val data = List("1", "2", "3")
+
+  IterablePipe(data, flowDef, mode)
+    .write(TypedCsv(s"output$i"))
+}
+
+class MultiOutputTest extends ThermometerSpec { def is = s2"""
+
+Ensure multiple test specs correctly write to separate output dirs
+==================================================================
+
+  Output1   $test1
+  Output2   $test1
+
+"""
+
+  def test1 = {
+    val job = new TestJob(1, scaldingArgs)
+    job.withFacts("output1" </> "_SUCCESS" ==> exists)
+  }
+
+  def test2 = {
+    val job = new TestJob(2, scaldingArgs)
+    job.withFacts("output2" </> "_SUCCESS"    ==> exists)
+  }
 }

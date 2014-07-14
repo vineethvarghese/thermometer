@@ -26,3 +26,5 @@ libraryDependencies ++=
 uniform.docSettings("https://github.com/CommBank/thermometer")
 
 uniform.ghsettings
+
+parallelExecution in Test := false

@@ -15,8 +15,8 @@
 package au.com.cba.omnia.thermometer
 package tools
 
-import cascading.flow.FlowDef
 import com.twitter.scalding._
+
 import scala.util.control.NonFatal
 import scalaz._, Scalaz._
 
