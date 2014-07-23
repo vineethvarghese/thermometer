@@ -35,13 +35,13 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">ScaldingSupport</span><span class="result"> extends <span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span></span>
+        <span class="name">ScaldingSupport</span><span class="result"> extends <span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span> with <a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport">ScaldingSupport</a></dd><dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/a0d5fda335e24bcc75856adf75152154e2e4baca//src/main/scala/au/com/cba/omnia/thermometer/tools/ScaldingSupport.scala" target="_blank">ScaldingSupport.scala</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Adds testing support for scalding by setting up a test <code>FlowDef</code> and <code>Mode</code>.</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/272a63b085b146836185ea13d46ebfc3fb7db029//core/src/main/scala/au/com/cba/omnia/thermometer/tools/ScaldingSupport.scala" target="_blank">ScaldingSupport.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span>, <span class="extype" name="com.twitter.scalding.LowPriorityFieldConversions">LowPriorityFieldConversions</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a>, <span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span>, <span class="extype" name="com.twitter.scalding.LowPriorityFieldConversions">LowPriorityFieldConversions</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
           <div class="subClasses hiddenContent"><a href="../core/ThermometerSpec.html" class="extype" name="au.com.cba.omnia.thermometer.core.ThermometerSpec">ThermometerSpec</a></div>
@@ -62,7 +62,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport"><span>ScaldingSupport</span></li><li class="in" name="com.twitter.scalding.FieldConversions"><span>FieldConversions</span></li><li class="in" name="com.twitter.scalding.LowPriorityFieldConversions"><span>LowPriorityFieldConversions</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport"><span>ScaldingSupport</span></li><li class="in" name="au.com.cba.omnia.thermometer.tools.HadoopSupport"><span>HadoopSupport</span></li><li class="in" name="com.twitter.scalding.FieldConversions"><span>FieldConversions</span></li><li class="in" name="com.twitter.scalding.LowPriorityFieldConversions"><span>LowPriorityFieldConversions</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -167,7 +167,7 @@
       </h4>
       
     </li><li name="com.twitter.scalding.LowPriorityFieldConversions#anyToFieldArg" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="anyToFieldArg(f:&lt;?&gt;):Comparable[_]"></a>
+      <a id="anyToFieldArg(f:Any):Comparable[_]"></a>
       <a id="anyToFieldArg(Any):Comparable[_]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -193,7 +193,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#asList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asList(f:&lt;?&gt;):List[Comparable[_]]"></a>
+      <a id="asList(f:cascading.tuple.Fields):List[Comparable[_]]"></a>
       <a id="asList(Fields):List[Comparable[_]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -206,7 +206,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>FieldConversions</dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#asSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asSet(f:&lt;?&gt;):Set[Comparable[_]]"></a>
+      <a id="asSet(f:cascading.tuple.Fields):Set[Comparable[_]]"></a>
       <a id="asSet(Fields):Set[Comparable[_]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -237,21 +237,8 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#conf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="conf:org.apache.hadoop.mapred.JobConf"></a>
-      <a id="conf:JobConf"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">lazy val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">conf</span><span class="result">: <span class="extype" name="org.apache.hadoop.mapred.JobConf">JobConf</span></span>
-      </span>
-      </h4>
-      
     </li><li name="com.twitter.scalding.FieldConversions#defaultMode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="defaultMode(fromFields:&lt;?&gt;,toFields:&lt;?&gt;):cascading.tuple.Fields"></a>
+      <a id="defaultMode(fromFields:cascading.tuple.Fields,toFields:cascading.tuple.Fields):cascading.tuple.Fields"></a>
       <a id="defaultMode(Fields,Fields):Fields"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -263,7 +250,7 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>FieldConversions</dd></dl></div>
-    </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#dir" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#dir" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="dir:String"></a>
       <a id="dir:String"></a>
       <h4 class="signature">
@@ -275,9 +262,9 @@
         <span class="name">dir</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a></dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#ensureUniqueFields" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ensureUniqueFields(left:&lt;?&gt;,right:&lt;?&gt;,rightPipe:&lt;?&gt;):(cascading.tuple.Fields,cascading.pipe.Pipe)"></a>
+      <a id="ensureUniqueFields(left:cascading.tuple.Fields,right:cascading.tuple.Fields,rightPipe:cascading.pipe.Pipe):(cascading.tuple.Fields,cascading.pipe.Pipe)"></a>
       <a id="ensureUniqueFields(Fields,Fields,Pipe):(Fields,Pipe)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -452,7 +439,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#getField" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getField(f:&lt;?&gt;,idx:&lt;?&gt;):cascading.tuple.Fields"></a>
+      <a id="getField(f:cascading.tuple.Fields,idx:Int):cascading.tuple.Fields"></a>
       <a id="getField(Fields,Int):Fields"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -465,7 +452,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>FieldConversions</dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#hasInts" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hasInts(f:&lt;?&gt;):Boolean"></a>
+      <a id="hasInts(f:cascading.tuple.Fields):Boolean"></a>
       <a id="hasInts(Fields):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -542,6 +529,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#jobConf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="jobConf:org.apache.hadoop.mapred.JobConf"></a>
+      <a id="jobConf:JobConf"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">jobConf</span><span class="result">: <span class="extype" name="org.apache.hadoop.mapred.JobConf">JobConf</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a></dd></dl></div>
     </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#mode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="mode:com.twitter.scalding.Mode"></a>
       <a id="mode:Mode"></a>
@@ -555,7 +555,7 @@
       </span>
       </h4>
       
-    </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#name" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="name:String"></a>
       <a id="name:String"></a>
       <h4 class="signature">
@@ -567,7 +567,7 @@
         <span class="name">name</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -582,7 +582,7 @@
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="com.twitter.scalding.FieldConversions#newSymbol" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="newSymbol(avoid:&lt;?&gt;,guess:&lt;?&gt;,trial:&lt;?&gt;):Symbol"></a>
+      <a id="newSymbol(avoid:Set[Symbol],guess:Symbol,trial:Int):Symbol"></a>
       <a id="newSymbol(Set[Symbol],Symbol,Int):Symbol"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -832,7 +832,9 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="com.twitter.scalding.FieldConversions">
+        <div class="parent" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">
+              <h3>Inherited from <a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a></h3>
+            </div><div class="parent" name="com.twitter.scalding.FieldConversions">
               <h3>Inherited from <span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span></h3>
             </div><div class="parent" name="com.twitter.scalding.LowPriorityFieldConversions">
               <h3>Inherited from <span class="extype" name="com.twitter.scalding.LowPriorityFieldConversions">LowPriorityFieldConversions</span></h3>

@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>ThermometerSource - au.com.cba.omnia.thermometer.core.ThermometerSource</title>
-          <meta name="description" content="ThermometerSource - au.com.cba.omnia.thermometer.core.ThermometerSource" />
-          <meta name="keywords" content="ThermometerSource au.com.cba.omnia.thermometer.core.ThermometerSource" />
+          <title>HadoopSupport - au.com.cba.omnia.thermometer.tools.HadoopSupport</title>
+          <meta name="description" content="HadoopSupport - au.com.cba.omnia.thermometer.tools.HadoopSupport" />
+          <meta name="keywords" content="HadoopSupport au.com.cba.omnia.thermometer.tools.HadoopSupport" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -12,7 +12,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../../index.html';
-            var hash = 'au.com.cba.omnia.thermometer.core.ThermometerSource$';
+            var hash = 'au.com.cba.omnia.thermometer.tools.HadoopSupport';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -22,26 +22,29 @@
    	  </script>
     
         </head>
-        <body class="value">
+        <body class="type">
       <div id="definition">
-        <img src="../../../../../../lib/object_big.png" />
-        <p id="owner"><a href="../../../../../package.html" class="extype" name="au">au</a>.<a href="../../../../package.html" class="extype" name="au.com">com</a>.<a href="../../../package.html" class="extype" name="au.com.cba">cba</a>.<a href="../../package.html" class="extype" name="au.com.cba.omnia">omnia</a>.<a href="../package.html" class="extype" name="au.com.cba.omnia.thermometer">thermometer</a>.<a href="package.html" class="extype" name="au.com.cba.omnia.thermometer.core">core</a></p>
-        <h1>ThermometerSource</h1>
+        <img src="../../../../../../lib/trait_big.png" />
+        <p id="owner"><a href="../../../../../package.html" class="extype" name="au">au</a>.<a href="../../../../package.html" class="extype" name="au.com">com</a>.<a href="../../../package.html" class="extype" name="au.com.cba">cba</a>.<a href="../../package.html" class="extype" name="au.com.cba.omnia">omnia</a>.<a href="../package.html" class="extype" name="au.com.cba.omnia.thermometer">thermometer</a>.<a href="package.html" class="extype" name="au.com.cba.omnia.thermometer.tools">tools</a></p>
+        <h1>HadoopSupport</h1>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">ThermometerSource</span>
+        <span class="name">HadoopSupport</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/272a63b085b146836185ea13d46ebfc3fb7db029//core/src/main/scala/au/com/cba/omnia/thermometer/core/ThermometerSource.scala" target="_blank">ThermometerSource.scala</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Adds testing support for Hadoop by creating a <code>JobConf</code> with a temporary path.</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/272a63b085b146836185ea13d46ebfc3fb7db029//core/src/main/scala/au/com/cba/omnia/thermometer/tools/HadoopSupport.scala" target="_blank">HadoopSupport.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+          <span class="toggle">Known Subclasses</span>
+          <div class="subClasses hiddenContent"><a href="../hive/HiveSupport.html" class="extype" name="au.com.cba.omnia.thermometer.hive.HiveSupport">HiveSupport</a>, <a href="ScaldingSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport">ScaldingSupport</a>, <a href="../core/ThermometerSpec.html" class="extype" name="au.com.cba.omnia.thermometer.core.ThermometerSpec">ThermometerSpec</a></div>
         </div></div>
         
 
@@ -59,7 +62,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="au.com.cba.omnia.thermometer.core.ThermometerSource"><span>ThermometerSource</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="au.com.cba.omnia.thermometer.tools.HadoopSupport"><span>HadoopSupport</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -150,19 +153,6 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="au.com.cba.omnia.thermometer.core.ThermometerSource#apply" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[A](x:Seq[A])(implicitflow:cascading.flow.FlowDef,implicitmode:com.twitter.scalding.Mode):com.twitter.scalding.TypedPipe[A]"></a>
-      <a id="apply[A](Seq[A])(FlowDef,Mode):TypedPipe[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="au.com.cba.omnia.thermometer.core.ThermometerSource.apply.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="flow">flow: <span class="extype" name="cascading.flow.FlowDef">FlowDef</span></span>, <span name="mode">mode: <span class="extype" name="com.twitter.scalding.Mode">Mode</span></span>)</span><span class="result">: <span class="extype" name="com.twitter.scalding.TypedPipe">TypedPipe</span>[<span class="extype" name="au.com.cba.omnia.thermometer.core.ThermometerSource.apply.A">A</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -195,6 +185,19 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#dir" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dir:String"></a>
+      <a id="dir:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dir</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -279,6 +282,32 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#jobConf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="jobConf:org.apache.hadoop.mapred.JobConf"></a>
+      <a id="jobConf:JobConf"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">jobConf</span><span class="result">: <span class="extype" name="org.apache.hadoop.mapred.JobConf">JobConf</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#name" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="name:String"></a>
+      <a id="name:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">name</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
