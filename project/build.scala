@@ -35,7 +35,7 @@ object build extends Build {
         ++ Seq(
           publishArtifact := false
         ),
-    aggregate = Seq(core)
+    aggregate = Seq(core, hive)
   )
 
   lazy val core = Project(
@@ -53,4 +53,15 @@ object build extends Build {
             )
         )
   )
+
+  lazy val hive = Project(
+    id = "hive",
+    base = file("hive"),
+    settings =
+      standardSettings
+        ++ uniform.project("thermometer-hive", "au.com.cba.omnia.thermometer.hive")
+        ++ Seq(
+          libraryDependencies ++= depend.hadoop() ++ depend.hive()
+        )
+  ).dependsOn(core)
 }
