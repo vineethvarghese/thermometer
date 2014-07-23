@@ -169,6 +169,13 @@ For example if you were testing TypedPsv/TypedCsv something like this would work
 
 ```
 
+hive
+----
+
+Mix in the `HiveSupport` trait in `import au.com.cba.omnia.thermometer.hive.HiveSupport` to add
+support for hive and, in particular, set up a separate warehouse directory and metadata database per
+test and provide the right `HiveConf`.
+
 
 ongoing work
 ------------
