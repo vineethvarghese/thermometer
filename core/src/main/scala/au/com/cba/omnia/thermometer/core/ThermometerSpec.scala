@@ -15,38 +15,31 @@
 package au.com.cba.omnia.thermometer
 package core
 
-import java.io.File
-
 import cascading.pipe.Pipe
 
-import com.twitter.scalding.Job
-import com.twitter.scalding.TypedPipe
-
-import org.apache.commons.io.FileUtils
+import com.twitter.scalding.{Job, TypedPipe, Args}
 
 import org.apache.hadoop.fs.{FileSystem, Path}
 
 import org.specs2._
-import org.specs2.execute._
-import org.specs2.matcher._
+import org.specs2.execute.{Result, Failure, FailureException}
+import org.specs2.matcher.{TerminationMatchers, ThrownExpectations}
 import org.specs2.specification.Fragments
 
 import scalaz.{Failure => _, _}, Scalaz._
 
-import au.com.cba.omnia.thermometer.context._
-import au.com.cba.omnia.thermometer.fact._
-import au.com.cba.omnia.thermometer.tools._
+import au.com.cba.omnia.thermometer.context.Context
+import au.com.cba.omnia.thermometer.fact.Fact
+import au.com.cba.omnia.thermometer.tools.{Errors, Flows, Jobs, ScaldingSupport}
 import au.com.cba.omnia.thermometer.core.Thermometer._
 
+/** Adds functionality that makes testing scalding flows and jobs nicer.*/
 abstract class ThermometerSpec extends Specification
     with TerminationMatchers
     with ThrownExpectations
     with ScalaCheck
     with ScaldingSupport {
   
-  override def map(fs: => Fragments) =
-    sequential ^ isolated ^ isolate(fs)
-
   implicit def PipeToVerifiable(p: Pipe) =
     new VerifiableFlow()
 
@@ -56,25 +49,31 @@ abstract class ThermometerSpec extends Specification
   implicit def JobToVerifiable(j: Job) =
     new VerifiableJob(j)
 
+  override def map(fs: => Fragments) =
+    sequential ^ isolated ^ isolate(fs)
+
   def isolate[A](thunk: => A): A = {
     resetFlow
     FileSystem.closeAll()
     thunk
   }
 
+  /** Evaluate the dependency first and then evaluate test.*/
   def withDependency(dependency: => Result)(test: => Result): Result = {
     dependency
     isolate { test }
   }
   
-  def withEnvironment(sourceEnv: Path)(test: => Result):Result = {
+  /** Run the test with sourceEnv being on the local hadoop path of the test.*/
+  def withEnvironment(sourceEnv: Path)(test: => Result): Result = {
     FileSystem.get(jobConf).copyFromLocalFile(sourceEnv, dir </> "user")
     test
   }
-  
+
   class VerifiableFlow() extends Verifiable {
     def run:Option[scalaz.\/[String,Throwable]] = Flows.runFlow(scaldingArgs, flow, mode)
   }
+
   class VerifiableJob(job: Job) extends Verifiable {
     def run:Option[scalaz.\/[String,Throwable]] = Jobs.runJob(job)
   }
@@ -85,7 +84,7 @@ abstract class ThermometerSpec extends Specification
     def runsOk: Result = {
       println("")
       println("")
-      println(s"============================   Running flow with work directory <$dir>  ============================")
+      println(s"============================   Running test with work directory <$dir>  ============================")
       println("")
       println("")
 

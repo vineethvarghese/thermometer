@@ -14,6 +14,8 @@
 
 package au.com.cba.omnia.thermometer.tools
 
+import java.util.concurrent.atomic.AtomicReference
+
 import scalaz._, Scalaz._
 
 import com.twitter.scalding._
@@ -23,21 +25,25 @@ import cascading.pipe.Pipe
 
 /** Adds testing support for scalding by setting up a test `FlowDef` and `Mode`.*/
 trait ScaldingSupport extends FieldConversions with HadoopSupport {
+  /* Implicit conversion from Cascading Pipe to Scalding RichPipe.*/
+  implicit def PipeToRichPipe(pipe : Pipe): RichPipe =
+    new RichPipe(pipe)
+
   lazy val flowref =
-    new java.util.concurrent.atomic.AtomicReference[FlowDef](new FlowDef <| (_.setName(name)))
+    new AtomicReference[FlowDef](new FlowDef <| (_.setName(name)))
 
   def resetFlow() =
     flowref.set(new FlowDef <| (_.setName(name)))
 
+  /** Test flow */
   implicit def flow: FlowDef =
     flowref.get
 
+  /** Test mode */
   implicit val mode: Mode =
     Hdfs(false, jobConf)
 
+  /** Default test Args*/
   lazy val scaldingArgs: Args =
     Mode.putMode(mode, Args("--hdfs"))
-
-  implicit def PipeToRichPipe(pipe : Pipe): RichPipe =
-    new RichPipe(pipe)
 }
