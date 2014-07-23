@@ -68,7 +68,7 @@ abstract class ThermometerSpec extends Specification
   }
   
   def withEnvironment(sourceEnv: Path)(test: => Result):Result = {
-    FileSystem.get(conf).copyFromLocalFile(sourceEnv, dir </> "user")
+    FileSystem.get(jobConf).copyFromLocalFile(sourceEnv, dir </> "user")
     test
   }
   
@@ -101,13 +101,13 @@ abstract class ThermometerSpec extends Specification
 
     def withExpectations(f: Context => Unit): Result = {
       runsOk
-      f(Context(conf))
+      f(Context(jobConf))
       ok
     }
 
     def withFacts(facts: Fact*): Result = {
       runsOk
-      facts.toList.map(fact => fact.run(Context(conf))).suml(Result.ResultMonoid)
+      facts.toList.map(fact => fact.run(Context(jobConf))).suml(Result.ResultMonoid)
     }
   }
 }
