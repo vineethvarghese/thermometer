@@ -51,12 +51,17 @@ object PathFactoids extends ThrownExpectations {
 
   def records[A](reader: ThermometerRecordReader[A], data: List[A]): PathFactoid =
     PathFactoid((context, path) => {
-      val records = context.glob(path).flatMap(p =>
-        reader.read(context.config, p).unsafePerformIO)
-      if (records.toSet == data.toSet)
-        ok.toResult
-      else
-        failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${data.mkString(", ")}], got [${records.mkString(", ")}].""")
+      val paths = context.glob(path)
+      if (paths.isEmpty)
+        failure(s"No files found under <${path}>.")
+      else {
+        val records = paths.flatMap(p =>
+          reader.read(context.config, p).unsafePerformIO)
+        if (records.toSet == data.toSet)
+          ok.toResult
+        else
+          failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${data.mkString(", ")}], got [${records.mkString(", ")}].""")
+      }
     })
 
   /**
@@ -73,15 +78,24 @@ object PathFactoids extends ThrownExpectations {
    */
   def records[A](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path): PathFactoid = {
     PathFactoid((context, actualPath) => {
-      def get(reader: ThermometerRecordReader[A], path: Path) = {
-        context.glob(path).flatMap(p => reader.read(context.config, p).unsafePerformIO)
+      def get(reader: ThermometerRecordReader[A], paths: List[Path]) = {
+        paths.flatMap(p => reader.read(context.config, p).unsafePerformIO)
       }
-      val actual = get(actualReader, actualPath)
-      val expected = get(expectedReader, expectedPath)
-      if (actual.toSet == expected.toSet)
-        ok.toResult
-      else
-        failure(s"""Path <${actualPath}> exists but it contains records that don't match. Expected [${expected.mkString(", ")}], got [${actual.mkString(", ")}]. Expected Path <${expectedPath}>""")
+
+      val expectedPaths = context.glob(expectedPath)
+      val actualPaths = context.glob(actualPath)
+      if (actualPaths.isEmpty)
+        failure(s"Path <${actualPath}> does not exist.")
+      else if (expectedPaths.isEmpty)
+        failure(s"Path <${expectedPath}> for reference data does not exist.")
+      else {
+        val actual = get(actualReader, actualPaths)
+        val expected = get(expectedReader, expectedPaths)
+        if (actual.toSet == expected.toSet)
+          ok.toResult
+        else
+          failure(s"""Path <${actualPath}> exists but it contains records that don't match. Expected [${expected.mkString(", ")}], got [${actual.mkString(", ")}]. Expected Path <${expectedPath}>""")
+      }
     })
   }
 
@@ -135,21 +149,31 @@ object PathFactoids extends ThrownExpectations {
 
   def recordCount[A](reader: ThermometerRecordReader[A], n: Int): PathFactoid =
     PathFactoid((context, path) => {
-      val records = context.glob(path).flatMap(p =>
-        reader.read(context.config, p).unsafePerformIO)
-      if (records.size == n)
-        ok.toResult
-      else
-        failure(s"""Path <${path}> exists but it contains ${records.size} records and we expected ${n}.""")
+      val paths = context.glob(path)
+      if (paths.isEmpty)
+        failure(s"No files found under <${path}>.")
+      else {
+        val records = paths.flatMap(p =>
+          reader.read(context.config, p).unsafePerformIO)
+        if (records.size == n)
+          ok.toResult
+        else
+          failure(s"""Path <${path}> exists but it contains ${records.size} records and we expected ${n}.""")
+      }
     })
 
   def lines(expected: List[String]): PathFactoid =
     PathFactoid((context, path) => {
-      val actual = context.lines(context.glob(path): _*)
-      if (actual.toSet == expected.toSet)
-        ok.toResult
-      else
-        failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${expected.mkString(", ")}], got [${actual.mkString(", ")}].""")
+      val paths = context.glob(path)
+      if (paths.isEmpty)
+        failure(s"No files found under <${path}>.")
+      else {
+        val actual = context.lines(paths: _*)
+        if (actual.toSet == expected.toSet)
+          ok.toResult
+        else
+          failure(s"""Path <${path}> exists but it contains records that don't match. Expected [${expected.mkString(", ")}], got [${actual.mkString(", ")}].""")
+      }
     })
 
 }
