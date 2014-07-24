@@ -48,7 +48,7 @@ trait ScaldingSupport extends FieldConversions with HadoopSupport {
     Mode.putMode(mode, Args("--hdfs"))
 
   /** Use `f` to create the job with the default args plus the specified arguments.*/
-  def withArgs(args: Map[String, String])(f: Args => Job): Job = {
+  def withArgs[A <: Job](args: Map[String, String])(f: Args => A): A = {
     f(args.foldLeft(scaldingArgs){ case (args, (key, value)) => args + (key -> List(value)) })
   }
 }
