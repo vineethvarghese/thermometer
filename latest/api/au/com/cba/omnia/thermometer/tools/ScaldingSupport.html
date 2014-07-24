@@ -39,7 +39,7 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Adds testing support for scalding by setting up a test <code>FlowDef</code> and <code>Mode</code>.</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/467db702e08392a4350fd1dc4fbcadd8ee590cb1//core/src/main/scala/au/com/cba/omnia/thermometer/tools/ScaldingSupport.scala" target="_blank">ScaldingSupport.scala</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Adds testing support for scalding by setting up a test <code>FlowDef</code> and <code>Mode</code>.</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/CommBank/thermometer/tree/4ace5bc3d890caacb303d939a99aa3483fa9faab//core/src/main/scala/au/com/cba/omnia/thermometer/tools/ScaldingSupport.scala" target="_blank">ScaldingSupport.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="HadoopSupport.html" class="extype" name="au.com.cba.omnia.thermometer.tools.HadoopSupport">HadoopSupport</a>, <span class="extype" name="com.twitter.scalding.FieldConversions">FieldConversions</span>, <span class="extype" name="com.twitter.scalding.LowPriorityFieldConversions">LowPriorityFieldConversions</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -398,7 +398,7 @@
         <span class="name">flow</span><span class="result">: <span class="extype" name="cascading.flow.FlowDef">FlowDef</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Test flow</p>
     </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#flowref" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="flowref:java.util.concurrent.atomic.AtomicReference[cascading.flow.FlowDef]"></a>
       <a id="flowref:AtomicReference[FlowDef]"></a>
@@ -554,7 +554,7 @@
         <span class="name">mode</span><span class="result">: <span class="extype" name="com.twitter.scalding.Mode">Mode</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Test mode</p>
     </li><li name="au.com.cba.omnia.thermometer.tools.HadoopSupport#name" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="name:String"></a>
       <a id="name:String"></a>
@@ -674,7 +674,7 @@
         <span class="name">scaldingArgs</span><span class="result">: <span class="extype" name="com.twitter.scalding.Args">Args</span></span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">Default test Args</p>
     </li><li name="com.twitter.scalding.FieldConversions#strFields" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="strFields[T&lt;:TraversableOnce[String]](f:T):cascading.tuple.Fields"></a>
       <a id="strFields[T&lt;:TraversableOnce[String]](T):Fields"></a>
@@ -823,6 +823,19 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="au.com.cba.omnia.thermometer.tools.ScaldingSupport#withArgs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withArgs[A&lt;:com.twitter.scalding.Job](args:Map[String,String])(f:com.twitter.scalding.Args=&gt;A):A"></a>
+      <a id="withArgs[A&lt;:Job](Map[String,String])((Args)⇒A):A"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withArgs</span><span class="tparams">[<span name="A">A &lt;: <span class="extype" name="com.twitter.scalding.Job">Job</span></span>]</span><span class="params">(<span name="args">args: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="com.twitter.scalding.Args">Args</span>) ⇒ <span class="extype" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport.withArgs.A">A</span></span>)</span><span class="result">: <span class="extype" name="au.com.cba.omnia.thermometer.tools.ScaldingSupport.withArgs.A">A</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Use <code>f</code> to create the job with the default args plus the specified arguments.</p>
     </li></ol>
             </div>
 
