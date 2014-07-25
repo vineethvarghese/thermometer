@@ -15,9 +15,13 @@
 package au.com.cba.omnia.thermometer
 package core
 
+import java.io.File
+
 import cascading.pipe.Pipe
 
 import com.twitter.scalding.{Job, TypedPipe, Args}
+
+import org.apache.commons.io.FileUtils
 
 import org.apache.hadoop.fs.{FileSystem, Path}
 
@@ -66,7 +70,9 @@ abstract class ThermometerSpec extends Specification
   
   /** Run the test with sourceEnv being on the local hadoop path of the test.*/
   def withEnvironment(sourceEnv: Path)(test: => Result): Result = {
-    FileSystem.get(jobConf).copyFromLocalFile(sourceEnv, dir </> "user")
+    val (sourceDir, targetDir) = (new File(sourceEnv.toUri.getPath), new File((dir </> "user").toUri.getPath))
+    FileUtils.forceMkdir(targetDir)
+    FileUtils.copyDirectory(sourceDir, targetDir)
     test
   }
 
