@@ -24,6 +24,7 @@ import au.com.cba.omnia.thermometer.tools.HadoopSupport
 /** Adds testing support for Hive by creating a `HiveConf` with a temporary path.*/
 trait HiveSupport extends HadoopSupport {
   lazy val hiveDir: String       = s"/tmp/hadoop/${name}/hive"
+  lazy val hiveDb: String        = s"$hiveDir/hive_db"
   lazy val hiveWarehouse: String = s"$hiveDir/warehouse"
   lazy val derbyHome: String     = s"$hiveDir/derby"
   lazy val hiveConf: HiveConf    = new HiveConf <| (conf => {
@@ -33,4 +34,6 @@ trait HiveSupport extends HadoopSupport {
   // Export the warehouse path so it gets picked up when a new hive conf is instantiated somehwere else.
   System.setProperty(METASTOREWAREHOUSE.varname, hiveWarehouse)
   System.setProperty("derby.system.home", derbyHome)
+  // Export the derby db file location so it is different for each test.
+  System.setProperty("javax.jdo.option.ConnectionURL", s"jdbc:derby:;databaseName=$hiveDb;create=true")
 }
