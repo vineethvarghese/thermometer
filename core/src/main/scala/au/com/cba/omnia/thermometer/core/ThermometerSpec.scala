@@ -98,9 +98,15 @@ abstract class ThermometerSpec extends Specification
         case None =>
           ok
         case Some(-\/(message)) =>
-          throw new FailureException(Failure("The pipe being tested did not complete.", message))
-        case Some(\/-(t)) =>
-          throw new FailureException(Failure("The pipe being tested did not complete.", Errors.renderWithStack(t), t.getStackTrace.toList))
+          throw new FailureException(Failure(s"The pipe being tested did not complete. $message", message))
+        case Some(\/-(t)) => {
+          val stackTrace = Errors.renderWithStack(t)
+          throw new FailureException(Failure(
+            s"The pipe being tested did not complete.\n $stackTrace",
+            t.getMessage,
+            t.getStackTrace.toList
+          ))
+        }
       }
     }
 
