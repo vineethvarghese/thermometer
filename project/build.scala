@@ -20,7 +20,7 @@ import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
   lazy val standardSettings =
-    Defaults.defaultSettings ++
+    Defaults.coreDefaultSettings ++
     uniformDependencySettings ++
     uniform.docSettings("https://github.com/CommBank/thermometer") ++ Seq(
       parallelExecution in Test := false
