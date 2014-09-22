@@ -28,4 +28,8 @@
       <name>hive.exec.dynamic.partition.mode</name>
       <value>nonstrict</value>
   </property>
+  <property>
+      <name>mapreduce.framework.name</name>
+      <value>yarn</value>
+  </property>
 </configuration>
