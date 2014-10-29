@@ -19,10 +19,6 @@ Demonstration of testing output against files
 
 """
 
-  case class Car(model: String, year: Int) {
-    def toPSV = s"${model}|${year}"
-  }
-
   val data = List(
     Car("Canyonero", 1999),
     Car("Batmobile", 1966))

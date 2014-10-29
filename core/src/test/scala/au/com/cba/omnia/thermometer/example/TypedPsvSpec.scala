@@ -34,10 +34,6 @@ Demonstration of ThermometerSpec
 
 """
 
-  case class Car(model: String, year: Int) {
-    def toPSV = s"${model}|${year}"
-  }
-
   val data = List(
     Car("Canyonero", 1999),
     Car("Batmobile", 1966)
@@ -68,7 +64,7 @@ Demonstration of ThermometerSpec
 class TestJob(i: Int, args: Args) extends Job(args) {
   val data = List("1", "2", "3")
 
-  IterablePipe(data, flowDef, mode)
+  IterablePipe(data)
     .write(TypedCsv(s"output$i"))
 }
 

@@ -12,14 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-package au.com.cba.omnia.thermometer
-package core
+package au.com.cba.omnia.thermometer.example
 
-import cascading.flow.FlowDef
-import com.twitter.scalding._
-import com.twitter.scalding.typed.IterablePipe
-
-object ThermometerSource {
-  def apply[A](x: Seq[A]): TypedPipe[A] =
-    IterablePipe[A](x.toList)
+case class Car(model: String, year: Int) {
+  def toPSV = s"${model}|${year}"
 }
