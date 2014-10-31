@@ -34,7 +34,7 @@ import scalaz.{Failure => _, _}, Scalaz._
 
 import au.com.cba.omnia.thermometer.context.Context
 import au.com.cba.omnia.thermometer.fact.Fact
-import au.com.cba.omnia.thermometer.tools.{Errors, Flows, Jobs, ScaldingSupport}
+import au.com.cba.omnia.thermometer.tools.{Errors, Flows, Jobs, ScaldingSupport, ExecutionSupport}
 import au.com.cba.omnia.thermometer.core.Thermometer._
 
 /** Adds functionality that makes testing scalding flows and jobs nicer.*/
@@ -42,7 +42,8 @@ abstract class ThermometerSpec extends Specification
     with TerminationMatchers
     with ThrownExpectations
     with ScalaCheck
-    with ScaldingSupport {
+    with ScaldingSupport
+    with ExecutionSupport {
   
   implicit def PipeToVerifiable(p: Pipe) =
     new VerifiableFlow()
