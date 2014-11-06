@@ -50,7 +50,10 @@ object PathFactoids extends ThrownExpectations {
       if (count == n) ok.toResult else failure(s"Path <${path}> exists but it contains ${count} records where we expected ${n}.")
     })
 
-  def records[A, B](reader: ThermometerRecordReader[A], data: List[A], adapter: A => B = identity[A] _): PathFactoid =
+  def records[A](reader: ThermometerRecordReader[A], data: List[A]): PathFactoid =
+    records(reader, data, identity[A] _)
+
+  def records[A, B](reader: ThermometerRecordReader[A], data: List[A], adapter: A => B): PathFactoid =
     PathFactoid((context, path) => {
       val paths = context.glob(path)
       if (paths.isEmpty)
@@ -82,10 +85,25 @@ object PathFactoids extends ThrownExpectations {
    * @param expectedReader reads records from the expectedPath.
    * @param expectedPath path that points to the reference data. If path is relative it is to the job's working
    *        directory.
+   */
+  def records[A](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path): PathFactoid =
+    records(actualReader, expectedReader, expectedPath, identity[A] _)
+
+  /**
+   * Create a factoid for comparing records loaded from thermometer record readers for the fact path and an expected path.
+   *
+   * This allows you to use different file formats for the actual output of the job and the 
+   * expected output of the job. Eg: Parquet files for the job output, but a readable CSV for the reference data.
+   *
+   * @param actualReader reads records from the fact's path, the paths should be the actual output of the job.
+   *        If fact path's are relative it is to the job's working directory.
+   * @param expectedReader reads records from the expectedPath.
+   * @param expectedPath path that points to the reference data. If path is relative it is to the job's working
+   *        directory.
    * @param adapter function adapts each of record from the expected as well as actual record set before the records
    *        are compared. If not specified, the identity function is used.
    */
-  def records[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B = identity[A]_): PathFactoid = {
+  def records[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B): PathFactoid = {
     PathFactoid((context, actualPath) => {
       def get(reader: ThermometerRecordReader[A], paths: List[Path]) = {
         paths.flatMap(p => reader.read(context.config, p).unsafePerformIO)
@@ -120,10 +138,24 @@ object PathFactoids extends ThrownExpectations {
    * @param expectedReader reads records from the expectedPath.
    * @param expectedPath path that points to the root directory of the reference data. If path is relative it is to the
    *        job's working directory.
+   */
+  def recordsByDirectory[A](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path): PathFactoid =
+    recordsByDirectory(actualReader, expectedReader, expectedPath, identity[A] _)
+
+  /**
+   * Create a factoid for comparing records loaded from thermometer record readers for the tree of directories beneath
+   * the fact path and the tree of directories of the expected path. The directory structure for each root must be the
+   * same and the records loaded from each subdirectory must be the same.
+   *
+   * @param actualReader reads records from the fact's path, the path should be a root directory of actual output of
+   *        the job. If fact path's are relative it is to the job's working directory.
+   * @param expectedReader reads records from the expectedPath.
+   * @param expectedPath path that points to the root directory of the reference data. If path is relative it is to the
+   *        job's working directory.
    * @param adapter function adapts each of record from the expected as well as actual record set before the records
    *        are compared. If not specified, the identity function is used.
    */
-  def recordsByDirectory[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B = identity[A]_): PathFactoid = {
+  def recordsByDirectory[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B): PathFactoid = {
     PathFactoid((context, actualPath) => {
       val system: FileSystem = FileSystem.get(context.config)
 
