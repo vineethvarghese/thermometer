@@ -71,7 +71,7 @@ object PathFactoids extends ThrownExpectations {
     })
 
   def checkEquality[A, B](actual: List[A], expected: List[A], adapter: A => B, koMessage: String): Result
-    = actual.map(adapter).must(beTypedEqualTo(expected.map(adapter))).updateMessage( _ => koMessage)
+    = actual.map(adapter).toSet.must(beTypedEqualTo(expected.map(adapter).toSet)).updateMessage( _ => koMessage)
 
 
   /**
