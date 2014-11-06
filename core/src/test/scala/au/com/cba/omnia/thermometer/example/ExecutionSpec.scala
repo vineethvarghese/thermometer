@@ -86,8 +86,8 @@ Demonstration of ThermometerSpec using Execution monad
     executesOk(execution2)
 
     facts(
-      path("output") ==> recordsByDirectory[Car](psvReader, psvReader, path("expected"), r => {
-        r match { case Car(model, year, _) => Car(model, year, "DUMMY")}
+      path("output") ==> recordsByDirectory(psvReader, psvReader, path("expected"), (r: Car) => {
+        r match { case Car(model, year, _) => model + year + "DUMMY"}
       })
     )
   }

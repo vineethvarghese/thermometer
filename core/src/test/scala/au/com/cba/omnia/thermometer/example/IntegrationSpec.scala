@@ -37,7 +37,7 @@ Demonstration of testing output against files
   def facts = withEnvironment(environment)({
     pipeline
       .withFacts(
-        path("output") ==> recordsByDirectory[Car](psvReader, psvReader, path("expected"), r => {
+        path("output") ==> recordsByDirectory(psvReader, psvReader, path("expected"), (r: Car) => {
           r match { case Car(model, year, _) => Car(model, year, "DUMMY")}
         }))
   })
@@ -46,7 +46,7 @@ Demonstration of testing output against files
   def facts2 = withEnvironment(environment2)({
     pipeline
       .withFacts(
-        path("output") ==> recordsByDirectory[Car](psvReader, psvReader, path("expected2"), r => {
+        path("output") ==> recordsByDirectory(psvReader, psvReader, path("expected2"), (r: Car) => {
           r match { case Car(model, year, _) => Car(model, year, "DUMMY")}
         }))
   })

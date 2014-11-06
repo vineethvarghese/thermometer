@@ -50,7 +50,7 @@ object PathFactoids extends ThrownExpectations {
       if (count == n) ok.toResult else failure(s"Path <${path}> exists but it contains ${count} records where we expected ${n}.")
     })
 
-  def records[A](reader: ThermometerRecordReader[A], data: List[A], adapter: A => A = identity[A] _): PathFactoid =
+  def records[A, B](reader: ThermometerRecordReader[A], data: List[A], adapter: A => B = identity[A] _): PathFactoid =
     PathFactoid((context, path) => {
       val paths = context.glob(path)
       if (paths.isEmpty)
@@ -67,8 +67,9 @@ object PathFactoids extends ThrownExpectations {
       }
     })
 
-  private def checkEquality[A](actual: List[A], expected: List[A], adapter: A => A, koMessage: String): Result
-    = actual.must(beTypedEqualTo(expected).^^^(_.map(adapter), identity _, _ => koMessage))
+  def checkEquality[A, B](actual: List[A], expected: List[A], adapter: A => B, koMessage: String): Result
+    = actual.map(adapter).must(beTypedEqualTo(expected.map(adapter))).updateMessage( _ => koMessage)
+
 
   /**
    * Create a factoid for comparing records loaded from thermometer record readers for the fact path and an expected path.
@@ -84,7 +85,7 @@ object PathFactoids extends ThrownExpectations {
    * @param adapter function adapts each of record from the expected as well as actual record set before the records
    *        are compared. If not specified, the identity function is used.
    */
-  def records[A](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => A = identity[A]_): PathFactoid = {
+  def records[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B = identity[A]_): PathFactoid = {
     PathFactoid((context, actualPath) => {
       def get(reader: ThermometerRecordReader[A], paths: List[Path]) = {
         paths.flatMap(p => reader.read(context.config, p).unsafePerformIO)
@@ -122,7 +123,7 @@ object PathFactoids extends ThrownExpectations {
    * @param adapter function adapts each of record from the expected as well as actual record set before the records
    *        are compared. If not specified, the identity function is used.
    */
-  def recordsByDirectory[A](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => A = identity[A]_): PathFactoid = {
+  def recordsByDirectory[A, B](actualReader: ThermometerRecordReader[A], expectedReader: ThermometerRecordReader[A], expectedPath: Path, adapter: A => B = identity[A]_): PathFactoid = {
     PathFactoid((context, actualPath) => {
       val system: FileSystem = FileSystem.get(context.config)
 
@@ -153,7 +154,7 @@ object PathFactoids extends ThrownExpectations {
         failure(s"""No subdirectories found beneath Path <${actualPath}>.""")
       } else {
         actualSubdirs.map(subdir => {
-          records[A](actualReader, expectedReader, expectedPath </> subdir </> "*", adapter).run(context, actualPath </> subdir </> "*")
+          records(actualReader, expectedReader, expectedPath </> subdir </> "*", adapter).run(context, actualPath </> subdir </> "*")
         }).reduce((a, b) => if (a.isFailure) a else b)
       }
     })
