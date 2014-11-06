@@ -14,6 +14,8 @@
 
 package au.com.cba.omnia.thermometer.example
 
-case class Car(model: String, year: Int) {
-  def toPSV = s"${model}|${year}"
+import java.util.Date
+
+case class Car(model: String, year: Int, purchaseDate: String = new Date().toString) {
+  def toPSV = s"${model}|${year}|${purchaseDate}"
 }

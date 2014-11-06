@@ -14,12 +14,12 @@
 
 package au.com.cba.omnia.thermometer.example
 
-import scala.util.Success
+
+import java.util.Date
 
 import scalaz.effect.IO
 
 import com.twitter.scalding._
-import com.twitter.scalding.typed.IterablePipe
 
 import au.com.cba.omnia.thermometer.core._
 import au.com.cba.omnia.thermometer.core.Thermometer._
@@ -36,16 +36,17 @@ Demonstration of ThermometerSpec using Execution monad
   Verify output against environment         $environment
 
 """
+  val purchaseDate = new Date().toString
 
   val data = List(
-    Car("Canyonero", 1999),
-    Car("Batmobile", 1966)
+    Car("Canyonero", 1999, purchaseDate),
+    Car("Batmobile", 1966, purchaseDate)
   )
 
   def execution: Execution[Unit] =
     ThermometerSource[Car](data)
-      .map(c => c.model -> c.year)
-      .writeExecution(TypedPsv[(String, Int)]("cars"))
+      .map(c => (c.model, c.year, c.purchaseDate))
+      .writeExecution(TypedPsv[(String, Int, String)]("cars"))
 
   def usingExpectations = {
     executesOk(execution)
@@ -71,21 +72,23 @@ Demonstration of ThermometerSpec using Execution monad
   val psvReader = ThermometerRecordReader[Car]((conf, path) => IO {
     new Context(conf).lines(path).map(line => {
       val parts = line.split('|')
-      Car(parts(0), parts(1).toInt)
+      Car(parts(0), parts(1).toInt, parts(2))
     })
   })
 
   def execution2: Execution[(Unit, Unit)] = {
-    val pipe = ThermometerSource[Car](data).map(c => c.model -> c.year)
-    pipe.writeExecution(TypedPsv[(String, Int)]("output/cars/1"))
-      .zip(pipe.writeExecution(TypedPsv[(String, Int)]("output/cars/2")))
+    val pipe = ThermometerSource[Car](data).map(c =>  (c.model, c.year, c.purchaseDate))
+    pipe.writeExecution(TypedPsv[(String, Int, String)]("output/cars/1"))
+      .zip(pipe.writeExecution(TypedPsv[(String, Int, String)]("output/cars/2")))
   }
 
   def environment = withEnvironment(path(getClass.getResource("env").toString)) {
     executesOk(execution2)
 
     facts(
-      path("output") ==> recordsByDirectory(psvReader, psvReader, path("expected"))
+      path("output") ==> recordsByDirectory[Car](psvReader, psvReader, path("expected"), r => {
+        r match { case Car(model, year, _) => Car(model, year, "DUMMY")}
+      })
     )
   }
 }

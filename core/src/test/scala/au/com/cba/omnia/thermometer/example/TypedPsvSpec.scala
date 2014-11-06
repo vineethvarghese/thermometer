@@ -41,8 +41,8 @@ Demonstration of ThermometerSpec
 
   def pipeline =
     ThermometerSource[Car](data)
-      .map(c => c.model -> c.year)
-      .write(TypedPsv[(String, Int)]("cars"))
+      .map(c => (c.model, c.year, c.purchaseDate))
+      .write(TypedPsv[(String, Int, String)]("cars"))
 
   def expectations =
     pipeline
